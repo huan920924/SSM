@@ -1,178 +1,175 @@
-> 个人博客：http://crossoverJie.top
 
-> 简书：http://www.jianshu.com/users/e2d07947c112/latest_articles
-
-> CSDN: http://blog.csdn.net/qq_18661793
-
-> 开源中国: http://my.oschina.net/crossoverjie
-
-> 掘金主页: https://gold.xitu.io/user/576d4aaf7db2a20054ea4544
-
-> **演示地址: [http://www.crossoverjie.top/SSM](http://www.crossoverjie.top/SSM)**
-
----
-# 下期预告---互联网项目的Maven结构
----
-# SSM
-使用Idea搭建的Maven项目，会不定期更新一些在实际开发中使用的技巧(ps:目前不是很忙基本上一周一更)。
-没有复杂的业务流程，更不是XXXX系统，只有一些技术的分享。想要学习XX系统的：
-- [company_open](https://github.com/crossoverJie/company_open)
-- [SalesStore](https://github.com/crossoverJie/SalesStore)
-
-这里有两个完整的项目，都写有注释也比较简单。
+<p align="center">
+                                                                                                                    
+ <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fluug8kpmnj30gl07hweq.jpg" >
+ <br/>
+ <br/>
+ <a href="https://travis-ci.org/crossoverJie/SSM">
+    <img src="https://travis-ci.org/crossoverJie/SSM.svg?branch=master" >
+ </a>
+ <a href="https://badge.juejin.im/entry/5856c00061ff4b0063be6be0/likes.svg?style=flat-square">
+    <img src="https://badge.juejin.im/entry/5856c00061ff4b0063be6be0/likes.svg?style=flat-square" >
+ </a>
+ <a href="https://github.com/ellerbrock/open-source-badge/">
+    <img src="https://badges.frapsoft.com/os/v1/open-source.svg?v=103" >
+ </a>
+<p>
 
 
-目前使用到的技术：
-- Spring SpringMVC Mybatis Druid Lucene Shiro websocket Redis 
-- `BootStrap`,` EasyUI`
+[中文简介](https://github.com/crossoverJie/SSM/blob/master/README-ZH.md)
+ 
+I'll update some skills in actual development aperiodically.There are no complicated operation flows or **xxx system**,just some practical shares about skills.
 
-*有任何问题和欢迎Issues*
+## Directory Structure
 
-> **觉得不错的朋友可以点下`star`,`watch`,`fork`也算是对我的鼓励了。**
+```shell
+├── SSM-API                                    // common API  
+│   ├── src/main
+│   ├── ├──java/com/crossoverJie               // specific code。  
+│   ├── ├──resources
+├── SSM-BOOT                                   // Available for internal use of dubbo dependencies 
+│   ├── ├──resources/spring                    // dubbo consumer configuration
+├── SSM-SERVICE                                // The service implementation of the dubbo application 
+│   ├── src/main
+│   ├── ├──java/com/crossoverJie/api           // specific code
+│   ├── ├──├──controller                       // Heartbeat detection interface
+│   ├── ├──├──dubbo                            // Dubbo related code
+│   ├── ├──├──├──dao                           // dao package
+│   ├── ├──├──├──pojo                          // pojo package
+│   ├── ├──├──├──service                       // service package
+│   ├── ├──├──├──util                          // Toolkit
+│   ├── ├──├──impl                             // implement dubbo API
+│   ├── ├──resources                           // configuration file
+│   ├── ├──├──mapping                          // *.mapper configuration file
+│   ├── ├──├──spring                           // Spring related configuration file
+├── SSM-WEB                                    // web application
+│   ├── src/main
+│   ├── ├──java/com/crossoverJie               // specific code
+│   ├── ├──├──controller                       // controller package
+│   ├── ├──├──cxf                              // CXF related code
+│   ├── ├──├──dao                              // dao package
+│   ├── ├──├──enums                            // enum package
+│   ├── ├──├──intercept                        // Interceptor
+│   ├── ├──├──kafka                            // Kafka
+│   ├── ├──├──├──official                      // Official consumption
+│   ├── ├──├──├──optimization                  // Multi-threaded consumption
+│   ├── ├──├──lucene                           // Lucene related code
+│   ├── ├──├──pojo                             // pojo package
+│   ├── ├──├──req                              // request package
+│   ├── ├──├──res                              // response package
+│   ├── ├──├──service                          // service pachage
+│   ├── ├──├──shiro                            // shiro related code
+│   ├── ├──├──util                             // Toolkit
+│   ├── ├──├──vo                               // vo package
+│   ├── ├──resources
+│   ├── ├──├──mapping                          // *.mapper configuration file
+│   ├── ├──webapp                              // front code
+├── doc
+│   ├──lucene                                  // lucene related code
+│   ├──sql                                     // sql scripts
+├── .gitignore                                 // gitignore 
+├── pom.xml                                    // parent pom
+├── LICENSE               
+├── README.md               
 
----
-
-# 联系作者
-- [crossoverJie@gmail.com](mailto:crossoverJie@gmail.com)
-
-#  反射的实际应用 - 构建日志对象
-博客地址：[SSM(九) 反射的实际应用 - 构建日志对象](http://crossoverjie.top/2017/01/19/SSM9/)
-
-简书地址：[http://www.jianshu.com/p/5a23ff31204f](http://www.jianshu.com/p/5a23ff31204f)
-
-效果实例：
-```java
-    @Test
-    public void insertSelective2() throws Exception {
-        Content content = new Content();
-        content.setContent("你好");
-        content.setContentname("1");
-        content.setCreatedate("2016-09-23");
-
-        contentService.insertSelective(content);
-
-        ContentLog log = new ContentLog();
-        CommonUtil.setLogValueModelToModel(content, log);
-        contentLogService.insertSelective(log);
-    }
 ```
 
-- [前言](http://crossoverjie.top/2017/01/19/SSM9/#前言)
-- [传统日志](http://crossoverjie.top/2017/01/19/SSM9/#传统日志)
-- [利用反射构建日志](http://crossoverjie.top/2017/01/19/SSM9/#利用反射构建日志)
-- [总结](http://crossoverjie.top/2017/01/19/SSM9/#总结)
+## TODO LIST
+
+* [x] [SSM(一)架构的整合](http://crossoverjie.top/2016/06/28/SSM1)
+* [x] [SSM(二)Lucene全文检索](http://crossoverjie.top/2016/07/06/SSM2)
+* [x] [SSM(三)Shiro使用详解](http://crossoverjie.top/2016/07/15/SSM3/)
+* [x] [SSM(四)WebService入门详解](http://crossoverjie.top/2016/08/02/SSM4/)
+* [x] [SSM(五)基于webSocket的聊天室](http://crossoverjie.top/2016/09/04/SSM5/)
+* [x] [SSM(六)跨域传输](http://crossoverjie.top/2016/10/18/SSM6/)
+* [x] [SSM(七)在JavaWeb应用中使用Redis](http://crossoverjie.top/2016/12/18/SSM7/)
+* [x] [SSM(八)动态切换数据源](http://crossoverjie.top/2017/01/05/SSM8/)
+* [x] [SSM(九) 反射的实际应用 - 构建日志对象](http://crossoverjie.top/2017/01/19/SSM9/)
+* [x] [SSM(十) 项目重构-互联网项目的Maven结构](http://crossoverjie.top/2017/03/04/SSM10/)
+* [x] [SSM(十一) 基于dubbo的分布式架构](http://crossoverjie.top/2017/04/07/SSM11/)
+* [x] [SSM(十二) SSM(十二) dubbo日志插件](http://crossoverjie.top/2017/04/25/SSM12/)
+* [x] [SSM(十三) 将dubbo暴露出HTTP服务](http://crossoverjie.top/2017/05/02/SSM13/)
+* [x] [SSM(十四) 基于annotation的http防重插件](https://crossoverjie.top/2017/05/24/SSM14/)
+* [x] [SSM(十五)乐观锁与悲观锁的实际应用](https://crossoverjie.top/2017/07/09/SSM15/)
+* [x] [SSM(十六)曲线救国-`Kafka consumer`消费异常处理](https://crossoverjie.top/2017/09/05/SSM16/)
+* [x] [SSM(十七) MQ应用](https://crossoverjie.top/2017/10/20/SSM17/)
+
+--- 
+
+# Special Note 
+
+On the project,`SSM-SERVICE` `SSM-WEB` module is only used to demonstrate the use of normal circumstances will only appear a service or web module.
+
+
+# Quick Start
+
+1. Import SQL Script
+
+[https://github.com/crossoverJie/SSM/tree/master/doc/sql](https://github.com/crossoverJie/SSM/tree/master/doc/sql)
+
+
+# Q&A
+
+#### ClassNotFoundException: *CheckReqNo*
+
+Because there is dependence: 
+
+https://github.com/crossoverJie/SSM-REQUEST-CHECK 
+
+https://github.com/crossoverJie/SSM-DUBBO-HTTP 
+
+jar。
+
+*solution:*
+
+- if you do not need them, please remove it.
+- if you need,flow: 
+
+https://github.com/crossoverJie/SSM-REQUEST-CHECK 
+
+https://github.com/crossoverJie/SSM-DUBBO-HTTP 
+
+and Installed locally。
 
 ---
 
-# 动态切换数据源
-博客地址：[SSM(八)动态切换数据源](http://crossoverjie.top/2017/01/05/SSM8/)
+# Partial Screenshots
 
-简书地址：[http://www.jianshu.com/p/9d3d92b37c0a](http://www.jianshu.com/p/9d3d92b37c0a)
+![](https://ws4.sinaimg.cn/large/006tNc79ly1fj8jl8t42oj30bo072q3g.jpg)
 
-效果实例：
-![3](http://img.blog.csdn.net/20170105012845706?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMTg2NjE3OTM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+![封面.jpg](https://ooo.0o0.ooo/2017/05/24/59253bc0291c1.jpg)
 
-- [前言](http://crossoverjie.top/2017/01/05/SSM8/#前言)
-- [手动切换数据源](http://crossoverjie.top/2017/01/05/SSM8/#手动切换数据源)
-- [自动切换数据源](http://crossoverjie.top/2017/01/05/SSM8/#自动切换数据源)
-- [总结](http://crossoverjie.top/2017/01/05/SSM8/#总结)
+![dubbo-http封面.jpg](https://user-gold-cdn.xitu.io/2017/5/3/fa1a532f5289bb58f887a8561ec236ed.jpg)
 
----
+![2.jpg](https://ooo.0o0.ooo/2017/04/07/58e66e4917dd1.jpg)
 
-# 在JavaWeb应用中使用Redis
-博客地址：[SSM(七)在JavaWeb应用中使用Redis](http://crossoverjie.top/2016/12/18/SSM7/)
-
-简书地址：[http://www.jianshu.com/p/77cd4ae50c8b](http://www.jianshu.com/p/77cd4ae50c8b)
-
-效果实例：
-![01.gif](http://ww2.sinaimg.cn/large/0060lm7Tgy1fd79hp9x6qg30bo0727wn.gif
-)
-
-- [前言](http://crossoverjie.top/2016/12/18/SSM7/#前言)
-- [Redis安装与使用？](http://crossoverjie.top/2016/12/18/SSM7/#Redis安装与使用)
-- [Spring整合Redis](http://crossoverjie.top/2016/12/18/SSM7/#Spring整合Redis)
-- [前端联调](http://crossoverjie.top/2016/12/18/SSM7/#前端联调)
-- [总结](http://crossoverjie.top/2016/12/18/SSM7/#总结)
-
----
-
-# 跨域传输
-博客地址：[SSM(六)跨域传输](http://crossoverjie.top/2016/10/18/SSM6/)
-简书地址：[http://www.jianshu.com/p/3e3d9a89fafc](http://www.jianshu.com/p/3e3d9a89fafc)
-效果实例：
-![](http://img.blog.csdn.net/20161018003136470)
-
-- [前言](http://crossoverjie.top/2016/10/18/SSM6/#前言)
-- [什么是跨域传输？](http://crossoverjie.top/2016/10/18/SSM6/#什么是跨域问题？)
-- [JSON](http://crossoverjie.top/2016/10/18/SSM6/#JSON)
-- [PostMan](http://crossoverjie.top/2016/10/18/SSM6/#PostMan)
-- [JSONP](http://crossoverjie.top/2016/10/18/SSM6/#JSONP)
-- [总结](http://crossoverjie.top/2016/10/18/SSM6/#总结)
-
----
-
-# 基于webSocket的聊天室
-博客地址：[SSM(五)基于webSocket的聊天室](http://crossoverjie.top/2016/09/04/SSM5/)
-简书地址：[http://www.jianshu.com/p/79faa8af6455](http://www.jianshu.com/p/79faa8af6455)
-效果实例：
-![](http://i.imgur.com/6of3Z5K.gif)
-
-- [前言](http://crossoverjie.top/2016/09/04/SSM5/#前言)
-- [websocket是什么？](http://crossoverjie.top/2016/09/04/SSM5/#websocket是什么？)
-- [后端](http://crossoverjie.top/2016/09/04/SSM5/#后端)
-- [websocket绕坑](http://crossoverjie.top/2016/09/04/SSM5/#websocket绕坑)
-- [前端](http://crossoverjie.top/2016/09/04/SSM5/#前端)
-- [Ueditor相关配置](http://crossoverjie.top/2016/09/04/SSM5/#Ueditor相关配置)
-- [总结](http://crossoverjie.top/2016/09/04/SSM5/#总结)
-
----
-
-
-# WebService入门详解
-博客地址：[SSM(四)WebService入门详解](http://crossoverjie.top/2016/08/02/SSM4/)
-简书地址：[http://www.jianshu.com/p/5c2b01aaa7ac](http://www.jianshu.com/p/5c2b01aaa7ac)
-效果实例：
-![](http://img.blog.csdn.net/20160802170000891)
-
-- [前言](http://crossoverjie.top/2016/08/02/SSM4/#前言)
-- [Spring整合CXF](http://crossoverjie.top/2016/08/02/SSM4/#Spring整合CXF)
-- [总结](http://crossoverjie.top/2016/08/02/SSM4/#总结)
-
----
-
-# Shiro使用详解
-博客地址：[SSM(三)Shiro使用详解](http://crossoverjie.top/2016/07/15/SSM3/)
-简书地址：[http://www.jianshu.com/p/6786ddf54582](http://www.jianshu.com/p/6786ddf54582)
-效果实例：
-![1](http://i.imgur.com/zbJxEfO.gif)
-
-- [前言](http://crossoverjie.top/2016/07/15/SSM3/#前言)
-- [创建自定义MyRealm类](http://crossoverjie.top/2016/07/15/SSM3/#创建自定义MyRealm类)
-- [整合Spring](http://crossoverjie.top/2016/07/15/SSM3/#整合Spring)
-- [使用Shiro标签库](http://crossoverjie.top/2016/07/15/SSM3/#使用Shiro标签库)
-- [整体测试](http://crossoverjie.top/2016/07/15/SSM3/#整体测试)
-- [MD5加密](http://crossoverjie.top/2016/07/15/SSM3/#MD5加密)
-- [总结](http://crossoverjie.top/2016/07/15/SSM3/#总结)
-
----
-
-# Lucene全文检索
-博客地址：[SSM(二)Lucene全文检索](http://crossoverjie.top/2016/07/06/SSM2)
-效果实例：
 ![](http://i.imgur.com/nRcHFQg.png)
-- [前言](http://crossoverjie.top/2016/07/06/SSM2/#前言)
-- [获取Maven依赖](http://crossoverjie.top/2016/07/06/SSM2/#获取Maven依赖)
-- [编写Lucene工具类](http://crossoverjie.top/2016/07/06/SSM2/#编写Lucene工具类)
-- [查询Controller的编写](http://crossoverjie.top/2016/07/06/SSM2/#查询Controller的编写)
-- [显示界面](http://crossoverjie.top/2016/07/06/SSM2/#显示界面)
-- [总结](http://crossoverjie.top/2016/07/06/SSM2/#总结)
 
----
 
-# SSM架构的整合
-博客地址：[SSM(一)框架的整合](http://crossoverjie.top/2016/06/28/SSM1)
+```properties
+2017-04-25 15:15:38,968 DEBUG [com.alibaba.dubbo.remoting.transport.DecodeHandler] -  [DUBBO] Decode decodeable message com.alibaba.dubbo.rpc.protocol.dubbo.DecodeableRpcInvocation, dubbo version: 2.5.3, current host: 127.0.0.1
+2017-04-25 15:15:39,484 DEBUG [com.crossoverJie.dubbo.filter.DubboTraceFilter] - dubbo请求数据:{"args":[1],"interfaceName":"com.crossoverJie.api.UserInfoApi","methodName":"getUserInfo"}
+2017-04-25 15:15:39,484 INFO [com.crossoverJie.api.impl.UserInfoApiImpl] - 用户查询Id=1
+2017-04-25 15:15:39,505 DEBUG [org.mybatis.spring.SqlSessionUtils] - Creating a new SqlSession
+2017-04-25 15:15:39,525 DEBUG [org.mybatis.spring.SqlSessionUtils] - SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6f56b29] was not registered for synchronization because synchronization is not active
+2017-04-25 15:15:39,549 DEBUG [org.mybatis.spring.transaction.SpringManagedTransaction] - JDBC Connection [com.alibaba.druid.proxy.jdbc.ConnectionProxyImpl@778b3121] will not be managed by Spring
+2017-04-25 15:15:39,555 DEBUG [com.crossoverJie.api.dubbo.dao.T_userDao.selectByPrimaryKey] - ==>  Preparing: select id, username, password,roleId from t_user where id = ? 
+2017-04-25 15:15:39,591 DEBUG [com.crossoverJie.api.dubbo.dao.T_userDao.selectByPrimaryKey] - ==> Parameters: 1(Integer)
+2017-04-25 15:15:39,616 DEBUG [com.crossoverJie.api.dubbo.dao.T_userDao.selectByPrimaryKey] - <==      Total: 1
+2017-04-25 15:15:39,616 DEBUG [com.alibaba.druid.pool.PreparedStatementPool] - {conn-10003, pstmt-20000} enter cache
+2017-04-25 15:15:39,617 DEBUG [org.mybatis.spring.SqlSessionUtils] - Closing non transactional SqlSession [org.apache.ibatis.session.defaults.DefaultSqlSession@6f56b29]
+2017-04-25 15:15:45,473 INFO [com.crossoverJie.dubbo.filter.DubboTraceFilter] - dubbo执行成功
+2017-04-25 15:15:45,476 DEBUG [com.crossoverJie.dubbo.filter.DubboTraceFilter] - dubbo返回数据{"args":[{"id":1,"password":"123456","roleId":1,"userName":"crossoverJie"}],"interfaceName":"com.crossoverJie.api.UserInfoApi","methodName":"getUserInfo"}
+```
 
----
 
-[![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badge/)
+
+# More Information
+
+[使用`springBoot+SpringCloud`构建微服务项目](https://github.com/crossoverJie/springboot-cloud)
+
+# Contact Author
+- [crossoverJie@gmail.com](mailto:crossoverJie@gmail.com)
+
+![weixinchat.jpg](https://crossoverjie.top/uploads/weixinchat.jpg)
 

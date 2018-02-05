@@ -1,6 +1,7 @@
 package com.crossoverJie.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
@@ -9,10 +10,10 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by chenjie on 2016/11/14.
+ * Created by crossoverJie on 2016/11/14.
  */
 public class RedisUtil {
-    private Logger logger = Logger.getLogger(RedisUtil.class);
+    private Logger logger = LoggerFactory.getLogger(RedisUtil.class);
     private RedisTemplate<Serializable, Object> redisTemplate;
 
     /**
@@ -33,8 +34,9 @@ public class RedisUtil {
      */
     public void removePattern(final String pattern) {
         Set<Serializable> keys = redisTemplate.keys(pattern);
-        if (keys.size() > 0)
+        if (keys.size() > 0) {
             redisTemplate.delete(keys);
+        }
     }
 
     /**
@@ -87,7 +89,7 @@ public class RedisUtil {
             operations.set(key, value);
             result = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("系统异常",e);
         }
         return result;
     }
@@ -108,7 +110,7 @@ public class RedisUtil {
             redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
             result = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("系统异常",e);
         }
         return result;
     }

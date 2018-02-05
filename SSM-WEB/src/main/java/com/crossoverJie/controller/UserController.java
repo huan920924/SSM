@@ -4,15 +4,14 @@ import com.crossoverJie.lucene.Indexer;
 import com.crossoverJie.lucene.Searcher;
 import com.crossoverJie.pojo.User;
 import com.crossoverJie.service.IUserService;
-import org.apache.lucene.queryparser.surround.query.SrndPrefixQuery;
-import org.apache.lucene.search.IndexSearcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,19 +22,15 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    @Resource
+
+    private Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
     private IUserService userService;
 
 
     @RequestMapping("/frontUserSet/{id}")
     public String frontUserSet(@PathVariable int id, Model model) {
-        /*User user = userService.getUserById(id);
-        model.addAttribute("currentUser", user);
-        String img_id = user.getImg_id();
-        if (img_id != null) {
-            String path = imgService.selectByPrimaryKey(Integer.parseInt(img_id)).getPath();
-            model.addAttribute("headimg", path);
-        }*/
         return "front/user/userSet";
     }
 
@@ -86,43 +81,15 @@ public class UserController {
         indexer.setIds(id);
         indexer.setCitys(citys);
         indexer.setDescs(desc);
-        indexer.index("E:\\Lucene");
-        String indexDir="E:\\Lucene";
+        indexer.index("/data/Lucene");
+        String indexDir="/data/Lucene";
         try {
             Searcher.search(indexDir,q);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("系统异常",e);
         }
 
         return null ;
-    }
-
-    @RequestMapping("/getUserList")
-    public void getUserList(@ModelAttribute User user, HttpServletResponse response, int page, int rows) {
-        /*response.setCharacterEncoding("utf-8");
-        Page<User> users = userService.findByParams(user,page,rows) ;
-        for(User u :users.getRows()){
-            //将角色ID转换为角色名称
-            String role_id = u.getRole_id() ;
-            if(role_id != null){
-                Role role = roleService.selectByPrimaryKey(Integer.parseInt(role_id)) ;
-                u.setRolename(role.getRole_name()) ;
-            }
-            Date date = u.getLast_date() ;
-            if(date != null){
-                SimpleDateFormat sm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
-                String strDate = sm.format(date) ;
-                u.setParsedate(strDate) ;
-            }
-        }
-
-        String json = JSON.toJSONString(users) ;
-        try {
-            response.getWriter().print(json) ;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
     }
 
     /**
@@ -136,12 +103,12 @@ public class UserController {
      * @date 2016-1-2  下午11:06:27
      */
     @RequestMapping("/create")
-    public void createUser(User user, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void createUser(User user, HttpServletResponse response) throws IOException {
         try {
             userService.createUser(user);
             response.getWriter().print("true");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("系统异常",e);
             response.getWriter().print("false");
         }
     }
@@ -161,12 +128,12 @@ public class UserController {
             userService.updateByPrimaryKeySelective(user);
             response.getWriter().print("true");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("系统异常",e);
         }
     }
 
     @RequestMapping("/loginOut")
-    public String loginOut(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String loginOut(HttpServletRequest request) throws IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("user");
         return "redirect:../login.jsp";
